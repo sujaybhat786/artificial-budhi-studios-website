@@ -1,53 +1,9 @@
 /* ============================================================
    ARTIFICIAL BUDHI STUDIOS — Design System & Styles
    Vedic-Futurism: Sacred geometry meets AI-native interface
+   Design tokens (colors, type, spacing, radii, motion) live in
+   tokens.css, loaded before this file.
    ============================================================ */
-
-/* --- Google Fonts Import --- */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-/* --- Design Tokens --- */
-:root {
-  /* Colors */
-  --obsidian:        #0B0B14;
-  --obsidian-light:  #12121F;
-  --obsidian-mid:    #1A1A2E;
-  --gold:            #F2A623;
-  --gold-dim:        #C4882A;
-  --gold-glow:       rgba(242, 166, 35, 0.15);
-  --gold-glow-strong:rgba(242, 166, 35, 0.35);
-  --emerald:         #1D9E75;
-  --emerald-dim:     #177A5B;
-  --emerald-glow:    rgba(29, 158, 117, 0.15);
-  --parchment:       #E8E0D0;
-  --parchment-dim:   #B8B0A0;
-  --parchment-faint: rgba(232, 224, 208, 0.06);
-  --white-soft:      rgba(255, 255, 255, 0.87);
-  --glass-bg:        rgba(18, 18, 31, 0.55);
-  --glass-border:    rgba(232, 224, 208, 0.1);
-  --glass-border-hover: rgba(242, 166, 35, 0.3);
-
-  /* Typography */
-  --font-display:  'Cormorant Garamond', 'Georgia', serif;
-  --font-body:     'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-
-  /* Spacing */
-  --section-py:    clamp(5rem, 10vh, 8rem);
-  --section-px:    clamp(1.25rem, 5vw, 6rem);
-  --gap-sm:        0.75rem;
-  --gap-md:        1.5rem;
-  --gap-lg:        3rem;
-  --gap-xl:        5rem;
-
-  /* Radii */
-  --radius-sm:     8px;
-  --radius-md:     16px;
-  --radius-lg:     24px;
-
-  /* Transitions */
-  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-base: 0.4s var(--ease-out-expo);
-}
 
 /* --- Reset & Base --- */
 *,
