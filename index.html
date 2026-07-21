@@ -12,6 +12,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Artificial Budhi Studios">
   <meta name="twitter:description" content="Ancient wisdom, artificial intelligence.">
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
 </head>
@@ -266,7 +267,12 @@
         <!-- Right: Contact Form -->
         <div class="reveal reveal-delay-2">
           <h3 style="margin-bottom:var(--gap-md); font-family:var(--font-display); font-size:1.4rem;">Get in touch</h3>
-          <form class="contact-form" id="contact-form" novalidate>
+          <form class="contact-form" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+            <input type="hidden" name="form-name" value="contact">
+            <p class="form-honeypot" hidden>
+              <label>Don't fill this out if you're human: <input name="bot-field"></label>
+            </p>
+
             <div class="form-group">
               <label for="contact-name">Name</label>
               <input type="text" id="contact-name" name="name" placeholder="Your full name" required autocomplete="name">

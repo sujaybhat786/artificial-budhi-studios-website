@@ -370,24 +370,33 @@ function initForm() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => {
-      data[key] = value;
-    });
-
-    // Show success message
-    const btn = form.querySelector('.btn-primary');
+    const btn = form.querySelector('#form-submit-btn');
     const originalText = btn.textContent;
-    btn.textContent = '✓ Message sent!';
-    btn.style.background = 'linear-gradient(135deg, var(--emerald), var(--emerald-dim))';
+    btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.background = '';
-      btn.disabled = false;
-      form.reset();
-    }, 3000);
+    const body = new URLSearchParams(new FormData(form)).toString();
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Form submission failed: ${res.status}`);
+        btn.textContent = '✓ Message sent!';
+        btn.style.background = 'linear-gradient(135deg, var(--emerald), var(--emerald-dim))';
+        form.reset();
+      })
+      .catch(() => {
+        btn.textContent = 'Something went wrong — email us directly';
+      })
+      .finally(() => {
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      });
   });
 }
