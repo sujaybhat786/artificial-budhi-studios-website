@@ -16,6 +16,13 @@ not tracked in git):
 uipro init --ai claude
 ```
 
+To preview locally with a real HTTP origin (the contact form and
+fonts behave better than over `file://`):
+
+```
+python3 -m http.server 4321
+```
+
 ## Structure
 
 - `index.html` — page markup
@@ -24,3 +31,15 @@ uipro init --ai claude
 - `styles.css` — component and layout styles
 - `script.js` — scroll reveals, nav, hero particles, Sri Yantra animation,
   contact form submission (Netlify Forms)
+
+## Design system
+
+Glassmorphism / dark cinematic, shared with the founder portfolio at
+[sujaybhat.com](https://sujaybhat.com) so the two sites read as one
+identity. Palette is ambient grey + deep indigo on dark crossed with
+premium black + gold (accent `#e3b04b`); type is Space Grotesk /
+Inter / JetBrains Mono.
+
+Real `backdrop-filter` glass is rationed to the nav, persona cards,
+role card and contact panel. Dense grids use the cheaper flat-gradient
+`.panel`, which reads the same without the blur cost.

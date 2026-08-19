@@ -1,33 +1,54 @@
 /* ============================================================
    ARTIFICIAL BUDHI STUDIOS — Interactive Scripts
-   Particles, scroll reveals, Sri Yantra animation, nav logic
+   Particles, scroll reveals, Sri Yantra, nav, form.
+   Colours are read from the tokens in tokens.css where the
+   canvas allows it; canvas needs literals, so the few below are
+   kept in one place and mirror --color-accent / --color-indigo.
    ============================================================ */
 
+/* Canvas can't read CSS variables directly — these mirror tokens.css. */
+const PALETTE = {
+  accent: [227, 176, 75],
+  indigo: [124, 143, 255],
+  fg: [242, 241, 238],
+};
+
+const rgba = ([r, g, b], a) => `rgba(${r}, ${g}, ${b}, ${a})`;
+
 document.addEventListener('DOMContentLoaded', () => {
-  // ---- Scroll-triggered reveal (IntersectionObserver) ----
   initScrollReveal();
-
-  // ---- Navbar scroll behavior ----
   initNavbar();
-
-  // ---- Particle canvas in hero ----
   initParticles();
-
-  // ---- Sri Yantra SVG animation ----
   initYantra();
-
-  // ---- Form handling ----
   initForm();
 });
 
 /* ====================
    SCROLL REVEAL
+   Standard tier: 24px rise, 500ms, fires once.
+   Stagger is capped at 8 children so long grids don't crawl.
    ==================== */
 function initScrollReveal() {
+  const STAGGER_CAP = 8;
+  const step = 60; // ms, mirrors --reveal-stagger
+
+  // Apply staggered delays inside any [data-stagger] container.
+  document.querySelectorAll('[data-stagger]').forEach((group) => {
+    const children = group.querySelectorAll(':scope > .reveal');
+    children.forEach((child, i) => {
+      const index = Math.min(i, STAGGER_CAP - 1);
+      child.style.transitionDelay = `${index * step}ms`;
+    });
+  });
+
   const reveals = document.querySelectorAll('.reveal');
   if (!reveals.length) return;
 
-  // Use IntersectionObserver for performant scroll-triggered animations
+  if (!('IntersectionObserver' in window)) {
+    reveals.forEach((el) => el.classList.add('visible'));
+    return;
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -53,64 +74,63 @@ function initNavbar() {
   const nav = document.querySelector('.nav');
   const hamburger = document.querySelector('.nav-hamburger');
   const navLinks = document.querySelector('.nav-links');
+  if (!nav) return;
 
-  // Scroll: add glass bg
-  let lastScroll = 0;
   const onScroll = () => {
-    const scrollY = window.scrollY;
-    if (scrollY > 60) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-    lastScroll = scrollY;
+    nav.classList.toggle('scrolled', window.scrollY > 60);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Hamburger toggle
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
-      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
-    });
+  if (!hamburger || !navLinks) return;
 
-    // Close on link click
-    navLinks.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        navLinks.classList.remove('open');
-        document.body.style.overflow = '';
-      });
-    });
-  }
+  const setMenu = (open) => {
+    hamburger.classList.toggle('open', open);
+    navLinks.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  hamburger.addEventListener('click', () => {
+    setMenu(!navLinks.classList.contains('open'));
+  });
+
+  navLinks.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setMenu(false));
+  });
+
+  // Escape closes the mobile menu — an escape route per the a11y checklist.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+      setMenu(false);
+      hamburger.focus();
+    }
+  });
 }
 
 /* ====================
    PARTICLE CANVAS
-   Lightweight particle glow behind hero
    ==================== */
 function initParticles() {
   const canvas = document.getElementById('hero-particles');
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
-  let width, height;
-  let particles = [];
-  let animationId;
-
-  // Check for reduced motion preference
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
-  const PARTICLE_COUNT = Math.min(60, Math.floor(window.innerWidth / 20));
+  const ctx = canvas.getContext('2d');
+  let width = 0;
+  let height = 0;
+  let particles = [];
+  let animationId = null;
+
+  const PARTICLE_COUNT = Math.min(60, Math.max(20, Math.floor(window.innerWidth / 20)));
   const COLORS = [
-    'rgba(242, 166, 35, 0.4)',
-    'rgba(242, 166, 35, 0.2)',
-    'rgba(29, 158, 117, 0.3)',
-    'rgba(29, 158, 117, 0.15)',
-    'rgba(232, 224, 208, 0.1)',
+    rgba(PALETTE.accent, 0.42),
+    rgba(PALETTE.accent, 0.2),
+    rgba(PALETTE.indigo, 0.38),
+    rgba(PALETTE.indigo, 0.18),
+    rgba(PALETTE.fg, 0.12),
   ];
 
   function resize() {
@@ -133,10 +153,7 @@ function initParticles() {
 
   function init() {
     resize();
-    particles = [];
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push(createParticle());
-    }
+    particles = Array.from({ length: PARTICLE_COUNT }, createParticle);
   }
 
   function drawConnections() {
@@ -147,9 +164,9 @@ function initParticles() {
         const dy = particles[i].y - particles[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < maxDist) {
-          const alpha = (1 - dist / maxDist) * 0.08;
+          const alpha = (1 - dist / maxDist) * 0.09;
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(242, 166, 35, ${alpha})`;
+          ctx.strokeStyle = rgba(PALETTE.indigo, alpha);
           ctx.lineWidth = 0.5;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -161,7 +178,6 @@ function initParticles() {
 
   function animate() {
     ctx.clearRect(0, 0, width, height);
-
     drawConnections();
 
     particles.forEach((p) => {
@@ -169,7 +185,6 @@ function initParticles() {
       p.y += p.vy;
       p.pulse += p.pulseSpeed;
 
-      // Wrap around edges
       if (p.x < -10) p.x = width + 10;
       if (p.x > width + 10) p.x = -10;
       if (p.y < -10) p.y = height + 10;
@@ -181,49 +196,42 @@ function initParticles() {
       ctx.arc(p.x, p.y, p.radius * scale, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
       ctx.fill();
-
-      // Glow effect
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius * scale * 3, 0, Math.PI * 2);
-      ctx.fillStyle = p.color.replace(/[\d.]+\)$/, '0.03)');
-      ctx.fill();
     });
 
     animationId = requestAnimationFrame(animate);
   }
 
-  // Only animate when hero is visible (IntersectionObserver)
   const heroSection = document.querySelector('.hero');
-  const heroObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (!animationId) animate();
-        } else {
-          if (animationId) {
+  init();
+
+  if (heroSection && 'IntersectionObserver' in window) {
+    const heroObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!animationId) animate();
+          } else if (animationId) {
             cancelAnimationFrame(animationId);
             animationId = null;
           }
-        }
-      });
-    },
-    { threshold: 0.05 }
-  );
+        });
+      },
+      { threshold: 0.05 }
+    );
+    heroObserver.observe(heroSection);
+  } else {
+    animate();
+  }
 
-  init();
-  heroObserver.observe(heroSection);
+  let resizeTimer;
   window.addEventListener('resize', () => {
-    resize();
-    // Re-scatter particles on significant resize
-    if (Math.abs(particles.length - PARTICLE_COUNT) > 5) {
-      init();
-    }
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(init, 150);
   });
 }
 
 /* ====================
    SRI YANTRA SVG
-   Programmatically generate a simplified Sri Yantra
    ==================== */
 function initYantra() {
   const container = document.getElementById('sri-yantra');
@@ -235,11 +243,11 @@ function initYantra() {
   svg.setAttribute('fill', 'none');
   svg.setAttribute('aria-hidden', 'true');
 
-  const strokeColor = 'rgba(242, 166, 35, 0.6)';
+  const strokeColor = rgba(PALETTE.accent, 0.55);
   const strokeWidth = '0.8';
-  const cx = 250, cy = 250;
+  const cx = 250;
+  const cy = 250;
 
-  // Outer circles
   [220, 200, 180].forEach((r) => {
     const circle = document.createElementNS(ns, 'circle');
     circle.setAttribute('cx', cx);
@@ -250,10 +258,7 @@ function initYantra() {
     svg.appendChild(circle);
   });
 
-  // Outer square (Bhupura) with gates
   const sq = 210;
-  const gate = 20;
-  // Simple square
   const rect = document.createElementNS(ns, 'rect');
   rect.setAttribute('x', cx - sq);
   rect.setAttribute('y', cy - sq);
@@ -263,7 +268,6 @@ function initYantra() {
   rect.setAttribute('stroke-width', strokeWidth);
   svg.appendChild(rect);
 
-  // Upward triangles (Shiva - masculine)
   const upTriangles = [
     { top: cy - 160, base: cy + 100, spread: 155 },
     { top: cy - 120, base: cy + 75, spread: 125 },
@@ -273,17 +277,13 @@ function initYantra() {
 
   upTriangles.forEach((t) => {
     const path = document.createElementNS(ns, 'polygon');
-    path.setAttribute(
-      'points',
-      `${cx},${t.top} ${cx - t.spread},${t.base} ${cx + t.spread},${t.base}`
-    );
+    path.setAttribute('points', `${cx},${t.top} ${cx - t.spread},${t.base} ${cx + t.spread},${t.base}`);
     path.setAttribute('stroke', strokeColor);
     path.setAttribute('stroke-width', strokeWidth);
     path.setAttribute('stroke-linejoin', 'round');
     svg.appendChild(path);
   });
 
-  // Downward triangles (Shakti - feminine)
   const downTriangles = [
     { bottom: cy + 160, top: cy - 100, spread: 155 },
     { bottom: cy + 120, top: cy - 75, spread: 120 },
@@ -294,17 +294,13 @@ function initYantra() {
 
   downTriangles.forEach((t) => {
     const path = document.createElementNS(ns, 'polygon');
-    path.setAttribute(
-      'points',
-      `${cx},${t.bottom} ${cx - t.spread},${t.top} ${cx + t.spread},${t.top}`
-    );
+    path.setAttribute('points', `${cx},${t.bottom} ${cx - t.spread},${t.top} ${cx + t.spread},${t.top}`);
     path.setAttribute('stroke', strokeColor);
     path.setAttribute('stroke-width', strokeWidth);
     path.setAttribute('stroke-linejoin', 'round');
     svg.appendChild(path);
   });
 
-  // Central bindu (dot)
   const bindu = document.createElementNS(ns, 'circle');
   bindu.setAttribute('cx', cx);
   bindu.setAttribute('cy', cy);
@@ -312,68 +308,65 @@ function initYantra() {
   bindu.setAttribute('fill', strokeColor);
   svg.appendChild(bindu);
 
-  // Lotus petals - simplified outer ring
-  const petalCount = 16;
-  const petalRadius = 175;
-  const petalSize = 18;
-  for (let i = 0; i < petalCount; i++) {
-    const angle = (i / petalCount) * Math.PI * 2 - Math.PI / 2;
-    const px = cx + Math.cos(angle) * petalRadius;
-    const py = cy + Math.sin(angle) * petalRadius;
+  const addPetalRing = (count, radius, rx, ry) => {
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+      const px = cx + Math.cos(angle) * radius;
+      const py = cy + Math.sin(angle) * radius;
 
-    const petal = document.createElementNS(ns, 'ellipse');
-    petal.setAttribute('cx', px);
-    petal.setAttribute('cy', py);
-    petal.setAttribute('rx', petalSize);
-    petal.setAttribute('ry', petalSize * 0.45);
-    petal.setAttribute(
-      'transform',
-      `rotate(${(angle * 180) / Math.PI + 90}, ${px}, ${py})`
-    );
-    petal.setAttribute('stroke', strokeColor);
-    petal.setAttribute('stroke-width', '0.5');
-    svg.appendChild(petal);
-  }
+      const petal = document.createElementNS(ns, 'ellipse');
+      petal.setAttribute('cx', px);
+      petal.setAttribute('cy', py);
+      petal.setAttribute('rx', rx);
+      petal.setAttribute('ry', ry);
+      petal.setAttribute('transform', `rotate(${(angle * 180) / Math.PI + 90}, ${px}, ${py})`);
+      petal.setAttribute('stroke', strokeColor);
+      petal.setAttribute('stroke-width', '0.5');
+      svg.appendChild(petal);
+    }
+  };
 
-  // Inner lotus petals
-  const innerPetalCount = 8;
-  const innerPetalRadius = 155;
-  for (let i = 0; i < innerPetalCount; i++) {
-    const angle = (i / innerPetalCount) * Math.PI * 2 - Math.PI / 2;
-    const px = cx + Math.cos(angle) * innerPetalRadius;
-    const py = cy + Math.sin(angle) * innerPetalRadius;
-
-    const petal = document.createElementNS(ns, 'ellipse');
-    petal.setAttribute('cx', px);
-    petal.setAttribute('cy', py);
-    petal.setAttribute('rx', 14);
-    petal.setAttribute('ry', 6);
-    petal.setAttribute(
-      'transform',
-      `rotate(${(angle * 180) / Math.PI + 90}, ${px}, ${py})`
-    );
-    petal.setAttribute('stroke', strokeColor);
-    petal.setAttribute('stroke-width', '0.5');
-    svg.appendChild(petal);
-  }
+  addPetalRing(16, 175, 18, 8.1);
+  addPetalRing(8, 155, 14, 6);
 
   container.appendChild(svg);
 }
 
 /* ====================
-   FORM HANDLING
+   FORM HANDLING (Netlify Forms)
+   Body must be URL-encoded, not JSON.
    ==================== */
 function initForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
+  const btn = form.querySelector('#form-submit-btn');
+  const status = form.querySelector('#form-status');
+
+  const setStatus = (message, state) => {
+    if (!status) return;
+    status.textContent = message;
+    if (state) {
+      status.setAttribute('data-state', state);
+    } else {
+      status.removeAttribute('data-state');
+    }
+  };
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const btn = form.querySelector('#form-submit-btn');
+    if (!form.checkValidity()) {
+      setStatus('Please fill in the required fields above.', 'error');
+      const firstInvalid = form.querySelector(':invalid');
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
     const originalText = btn.textContent;
     btn.textContent = 'Sending...';
     btn.disabled = true;
+    setStatus('Sending your message...');
 
     const body = new URLSearchParams(new FormData(form)).toString();
 
@@ -384,19 +377,15 @@ function initForm() {
     })
       .then((res) => {
         if (!res.ok) throw new Error(`Form submission failed: ${res.status}`);
-        btn.textContent = '✓ Message sent!';
-        btn.style.background = 'linear-gradient(135deg, var(--emerald), var(--emerald-dim))';
+        setStatus('Thanks — your message is on its way. We’ll be in touch.', 'success');
         form.reset();
       })
       .catch(() => {
-        btn.textContent = 'Something went wrong — email us directly';
+        setStatus('Something went wrong. Email us directly at hello@artificialbudhi.com.', 'error');
       })
       .finally(() => {
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 3000);
+        btn.textContent = originalText;
+        btn.disabled = false;
       });
   });
 }
