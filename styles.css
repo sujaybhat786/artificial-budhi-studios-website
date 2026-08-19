@@ -4,10 +4,10 @@
    tokens.css, which is loaded before this file.
 
    Glass rationing: real backdrop-filter is reserved for the nav,
-   the persona cards, the role card and the contact panel — the
-   surfaces that sit over the aurora. Dense grids (verticals,
-   brands, products) use the cheaper flat-gradient .panel, which
-   reads the same but costs no blur.
+   the brand stat strips, the persona cards, the role card, the
+   contact panel and the founder card — the surfaces that sit over
+   the aurora. The dense grids (verticals, products) use the cheaper
+   flat-gradient .panel, which reads the same but costs no blur.
    ============================================================ */
 
 /* --- Reset & Base --- */
