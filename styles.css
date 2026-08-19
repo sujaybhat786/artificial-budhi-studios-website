@@ -847,6 +847,149 @@ a:hover { color: var(--color-accent-soft); }
 }
 
 /* ============================================================
+   Selected Work — featured projects
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-md);
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.project-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+}
+
+.project-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.project-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.1rem;
+}
+
+.project-summary {
+  font-size: 1rem;
+  color: var(--color-fg);
+}
+
+.project-detail {
+  font-size: 0.9375rem;
+  color: var(--color-fg-muted);
+  flex-grow: 1;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.project-link:hover { color: var(--color-accent-soft); }
+
+/* --- Also in the workshop --- */
+.subsection-title {
+  font-size: 1.1rem;
+  color: var(--color-fg-muted);
+  margin: var(--gap-xl) 0 var(--gap-md);
+}
+
+.small-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-sm);
+  list-style: none;
+}
+
+.small-project {
+  padding: var(--gap-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.small-project:hover {
+  transform: translateY(-3px);
+  border-color: rgba(227, 176, 75, 0.28);
+}
+
+.small-project-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-sm);
+}
+
+.small-project h4 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.small-project p {
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+  margin: 0;
+}
+
+/* ============================================================
+   Clients
+   ============================================================ */
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-md);
+}
+
+.client-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: var(--gap-md);
+  min-height: 44px;
+  color: var(--color-fg);
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.client-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(227, 176, 75, 0.3);
+  color: var(--color-fg);
+}
+
+.client-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.client-card:hover .client-name { color: var(--color-accent); }
+
+.client-note {
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+  line-height: 1.5;
+}
+
+/* ============================================================
    Careers / Join Us
    ============================================================ */
 .careers-inner {
@@ -972,6 +1115,32 @@ a:hover { color: var(--color-accent-soft); }
 .form-status[data-state="error"] { color: #ff9d9d; }
 .form-status[data-state="success"] { color: var(--color-indigo); }
 
+/* --- Direct contact details --- */
+.direct-contact {
+  margin-top: var(--gap-md);
+  padding-top: var(--gap-md);
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.direct-contact .section-label { margin-bottom: 0.5rem; }
+
+.direct-contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.direct-contact-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted);
+  word-break: break-word;
+}
+
+.direct-contact-list a:hover { color: var(--color-accent); }
+
 /* ============================================================
    Cross-link to the founder portfolio
    ============================================================ */
@@ -1061,6 +1230,12 @@ a:hover { color: var(--color-accent-soft); }
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .projects-grid { grid-template-columns: 1fr; }
+
+  .small-projects-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .clients-grid { grid-template-columns: repeat(2, 1fr); }
+
   .products-grid { grid-template-columns: repeat(2, 1fr); }
 
   .careers-inner {
@@ -1106,8 +1281,23 @@ a:hover { color: var(--color-accent-soft); }
   .verticals-grid,
   .brands-grid,
   .products-grid,
-  .personas-grid {
+  .personas-grid,
+  .small-projects-grid,
+  .clients-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Backdrop-filter is the expensive part of glass. With this many
+     glass surfaces, drop the blur on small screens and fall back to
+     the panel gradient — identical visual language, no scroll jank. */
+  .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
   }
 
   .personas-grid { max-width: 26rem; }
