@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Artificial Budhi Studios — Ancient Wisdom, Artificial Intelligence</title>
   <meta name="description" content="Artificial Budhi Studios is an AI media, education, and product studio at the intersection of ancient Indian knowledge systems and modern AI.">
-  <meta name="theme-color" content="#0B0B14">
+  <meta name="theme-color" content="#05060b">
   <meta property="og:title" content="Artificial Budhi Studios — Ancient Wisdom, Artificial Intelligence">
   <meta property="og:description" content="AI media, education, and product studio at the intersection of ancient Indian knowledge systems and modern AI.">
   <meta property="og:type" content="website">
@@ -14,13 +14,16 @@
   <meta name="twitter:description" content="Ancient wisdom, artificial intelligence.">
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2305060b'/><text x='16' y='23' font-family='sans-serif' font-size='19' font-weight='700' fill='%23e3b04b' text-anchor='middle'>A</text></svg>">
 </head>
 <body>
 
+  <!-- Aurora backdrop — the only thing the glass surfaces refract -->
+  <div class="aurora" aria-hidden="true"></div>
+
   <!-- ========== NAVIGATION ========== -->
   <nav class="nav" aria-label="Primary navigation">
-    <a href="#" class="nav-logo" aria-label="Artificial Budhi Studios home">◉ Artificial Budhi</a>
+    <a href="#hero" class="nav-logo">Artificial Budhi Studios</a>
     <ul class="nav-links" role="list">
       <li><a href="#manifesto">Manifesto</a></li>
       <li><a href="#verticals">What We Do</a></li>
@@ -28,8 +31,9 @@
       <li><a href="#personas">AI Personas</a></li>
       <li><a href="#products">Products</a></li>
       <li><a href="#careers">Join Us</a></li>
+      <li><a href="https://sujaybhat.com" class="nav-cta" target="_blank" rel="noopener noreferrer">Founder ↗</a></li>
     </ul>
-    <button class="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+    <button class="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
       <span></span>
       <span></span>
       <span></span>
@@ -48,8 +52,8 @@
       <h1>Artificial Budhi<br>Studios</h1>
       <p class="hero-tagline">Ancient wisdom, artificial intelligence.</p>
       <div class="hero-ctas">
-        <a href="#verticals" class="btn btn-primary">Explore our work ↓</a>
-        <a href="#careers" class="btn btn-secondary">We're hiring →</a>
+        <a href="#verticals" class="btn btn-primary">Explore our work</a>
+        <a href="#careers" class="btn btn-secondary">We're hiring</a>
       </div>
     </div>
 
@@ -63,7 +67,7 @@
   <section class="section manifesto" id="manifesto">
     <div class="container">
       <div class="reveal">
-        <p class="manifesto-sanskrit">
+        <p class="manifesto-sanskrit" lang="sa">
           बुद्धिर्यस्य बलं तस्य
         </p>
         <p class="manifesto-english">
@@ -81,21 +85,27 @@
         <h2 class="section-title">Three studios. One mission.</h2>
       </div>
 
-      <div class="verticals-grid">
-        <div class="glass-card vertical-card reveal reveal-delay-1">
-          <div class="vertical-icon">🎬</div>
+      <div class="verticals-grid" data-stagger>
+        <div class="panel sheen card vertical-card reveal">
+          <span class="icon-tile">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13H3z"/><path d="m3 7 3-4h4l-3 4"/><path d="m10 7 3-4h4l-3 4"/><path d="m17 7 3-4"/></svg>
+          </span>
           <h3>Media Studio</h3>
           <p>AI-driven content across Instagram and YouTube — from mythological storytelling to tech education, powered by generative AI.</p>
         </div>
 
-        <div class="glass-card vertical-card reveal reveal-delay-2">
-          <div class="vertical-icon">📚</div>
+        <div class="panel sheen card vertical-card reveal">
+          <span class="icon-tile">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v13"/><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H12v17H5.5A2.5 2.5 0 0 0 3 22.5z"/><path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H12v17h6.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg>
+          </span>
           <h3>AI Gurukula</h3>
           <p>Teaching the AI content-creation stack — hands-on programs that take creators from zero to production-ready AI workflows.</p>
         </div>
 
-        <div class="glass-card vertical-card reveal reveal-delay-3">
-          <div class="vertical-icon">⚡</div>
+        <div class="panel sheen card vertical-card reveal">
+          <span class="icon-tile">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4.5 13H12l-1 9 8.5-11H12z"/></svg>
+          </span>
           <h3>Product Studio</h3>
           <p>AI-powered apps and tools that make ancient Indian knowledge accessible, interactive, and delightfully modern.</p>
         </div>
@@ -111,50 +121,41 @@
         <h2 class="section-title">Media brands with momentum.</h2>
       </div>
 
-      <div class="brands-grid">
-        <!-- Artificial Budhi -->
-        <div class="glass-card brand-card reveal reveal-delay-1">
-          <div class="brand-thumb" aria-hidden="true">🧠</div>
-          <div class="brand-info">
-            <h3>Artificial Budhi</h3>
-            <p>General AI content — tools, tutorials, and the future of intelligence, through an Indian lens.</p>
+      <div class="brands-grid" data-stagger>
+        <div class="panel sheen card brand-card reveal">
+          <h3>Artificial Budhi</h3>
+          <p>The flagship. AI filmmaking, teardowns, and craft — the future of intelligence through an Indian lens.</p>
+          <div class="brand-stats">
             <div class="brand-stat">
-              <span class="stat-number">180K</span> followers
+              <span class="stat-number">183K</span>
+              <span class="stat-platform">Instagram</span>
+            </div>
+            <div class="brand-stat">
+              <span class="stat-number">35K</span>
+              <span class="stat-platform">YouTube</span>
             </div>
           </div>
         </div>
 
-        <!-- AIthihasa -->
-        <div class="glass-card brand-card reveal reveal-delay-2">
-          <div class="brand-thumb" aria-hidden="true">🏛️</div>
-          <div class="brand-info">
-            <h3>AIthihasa</h3>
-            <p>AI-reimagined history — Indian epics, civilisations, and mythology brought alive with generative AI.</p>
+        <div class="panel sheen card brand-card reveal">
+          <h3>AIthihasa</h3>
+          <p>Indian history and myth, rebuilt frame by frame — epics and civilisations brought alive with generative AI.</p>
+          <div class="brand-stats">
             <div class="brand-stat">
-              <span class="stat-number">36K</span> followers
+              <span class="stat-number">35K</span>
+              <span class="stat-platform">Followers</span>
             </div>
           </div>
         </div>
 
-        <!-- Cland Gandabherunda -->
-        <div class="glass-card brand-card reveal reveal-delay-3">
-          <div class="brand-thumb" aria-hidden="true">🦅</div>
-          <div class="brand-info">
-            <h3>Cland Gandabherunda</h3>
-            <p>Karnataka regional AI content — local culture, Kannada heritage, and state identity fused with AI storytelling.</p>
+        <div class="panel sheen card brand-card reveal">
+          <h3>Clan Gandabherunda</h3>
+          <p>Karnataka's iconography as a living visual language — local culture and Kannada heritage fused with AI storytelling.</p>
+          <div class="brand-stats">
             <div class="brand-stat">
-              <span class="stat-number">16K</span> followers
+              <span class="stat-number">13K</span>
+              <span class="stat-platform">Followers</span>
             </div>
-          </div>
-        </div>
-
-        <!-- The 5th Veda -->
-        <div class="glass-card brand-card reveal reveal-delay-4">
-          <div class="brand-thumb" aria-hidden="true">🎞️</div>
-          <div class="brand-info">
-            <h3>The 5th Veda</h3>
-            <p>An upcoming AI documentary series exploring the convergence of ancient wisdom and artificial intelligence.</p>
-            <span class="brand-stat-badge">Coming Soon</span>
           </div>
         </div>
       </div>
@@ -165,26 +166,36 @@
   <section class="section" id="personas">
     <div class="container">
       <div class="reveal text-center">
-        <span class="section-label" style="justify-content:center;">AI Personas</span>
+        <span class="section-label">AI Personas</span>
         <h2 class="section-title">Meet our AI-generated characters.</h2>
-        <p style="margin:0 auto var(--gap-lg); max-width:550px; color:var(--parchment-dim);">
+        <p class="section-intro">
           Original AI personas that live across our content — each with a distinct identity, voice, and purpose.
         </p>
       </div>
 
-      <div class="personas-grid">
-        <div class="glass-card persona-card reveal reveal-delay-1">
-          <div class="persona-avatar" aria-hidden="true">👩‍🎤</div>
+      <div class="personas-grid" data-stagger>
+        <div class="glass sheen card persona-card reveal">
+          <span class="persona-avatar">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18 16.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>
+          </span>
           <h3>Kaamila Kastoori</h3>
-          <p class="persona-role">AI Supermodel</p>
-          <p>India's first AI-generated fashion and cultural persona — pushing the boundaries of synthetic identity and digital beauty.</p>
+          <div class="persona-meta">
+            <span class="status-badge status-live">AI Influencer</span>
+            <span class="tag">22K followers</span>
+          </div>
+          <p>A fully AI-generated influencer — consistent identity, voice, and world, pushing the boundaries of synthetic identity and digital beauty.</p>
         </div>
 
-        <div class="glass-card persona-card reveal reveal-delay-2">
-          <div class="persona-avatar" aria-hidden="true">🧘</div>
+        <div class="glass sheen card persona-card reveal">
+          <span class="persona-avatar">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+          </span>
           <h3>Ayur Guru</h3>
-          <p class="persona-role">Ayurveda Guide</p>
-          <p>An AI character making Ayurvedic wisdom accessible — from dosha insights to daily wellness, in a modern conversational format.</p>
+          <div class="persona-meta">
+            <span class="status-badge status-upcoming">Upcoming</span>
+            <span class="tag">AI Influencer in Ayurveda</span>
+          </div>
+          <p>An AI character making Ayurvedic wisdom accessible — from dosha insights to daily wellness, in a modern conversational format. Not yet launched.</p>
         </div>
       </div>
     </div>
@@ -198,41 +209,55 @@
         <h2 class="section-title">Apps we're building.</h2>
       </div>
 
-      <div class="products-grid">
-        <div class="glass-card product-card reveal reveal-delay-1">
-          <div class="product-icon" aria-hidden="true">🕉️</div>
+      <div class="products-grid" data-stagger>
+        <div class="panel sheen card product-card reveal">
           <div class="product-header">
             <h3>Learn Shloka Chanting</h3>
             <span class="status-badge status-building">Building</span>
           </div>
           <p>A Sanskrit chanting app with AI pronunciation coaching — learn shlokas with real-time feedback and guided recitation.</p>
+          <div class="product-meta">
+            <span class="tag">Sanskrit</span>
+            <span class="tag">Speech AI</span>
+            <span class="tag">Mobile</span>
+          </div>
         </div>
 
-        <div class="glass-card product-card reveal reveal-delay-2">
-          <div class="product-icon" aria-hidden="true">⚔️</div>
+        <div class="panel sheen card product-card reveal">
           <div class="product-header">
             <h3>Mahabharata Quiz</h3>
-            <span class="status-badge status-live">Live</span>
+            <span class="status-badge status-upcoming">Upcoming</span>
           </div>
           <p>Test your knowledge of the great epic — AI-generated questions across characters, dharma dilemmas, and battle strategy.</p>
+          <div class="product-meta">
+            <span class="tag">Mythology</span>
+            <span class="tag">Quiz</span>
+          </div>
         </div>
 
-        <div class="glass-card product-card reveal reveal-delay-3">
-          <div class="product-icon" aria-hidden="true">🌙</div>
+        <div class="panel sheen card product-card reveal">
           <div class="product-header">
             <h3>AI Bedtime Stories</h3>
-            <span class="status-badge status-building">Building</span>
+            <span class="status-badge status-building">In Development</span>
           </div>
           <p>Generate personalised bedtime stories for children, woven with Indian mythology, folklore, and moral lessons.</p>
+          <div class="product-meta">
+            <span class="tag">Kids</span>
+            <span class="tag">Generative text</span>
+          </div>
         </div>
 
-        <div class="glass-card product-card reveal reveal-delay-4">
-          <div class="product-icon" aria-hidden="true">💍</div>
+        <div class="panel sheen card product-card reveal">
           <div class="product-header">
-            <h3>AI Pre-Wedding Photos</h3>
-            <span class="status-badge status-coming-soon">Coming Soon</span>
+            <h3>Saañjh</h3>
+            <span class="status-badge status-building">In Development</span>
           </div>
-          <p>Generate stunning AI pre-wedding photoshoots in any style — from palace settings to fantastical dreamscapes.</p>
+          <p>A studio in an app: couples get a cinematic pre-wedding film without a crew, a location scout, or a five-figure budget. Built on Higgsfield MCP and Seedance 2.0, with a couple-identity training step so both faces stay consistent across every shot.</p>
+          <div class="product-meta">
+            <span class="tag">Generative video</span>
+            <span class="tag">Higgsfield MCP</span>
+            <span class="tag">Seedance 2.0</span>
+          </div>
         </div>
       </div>
     </div>
@@ -253,20 +278,20 @@
             You'll work directly with founders, learn the full AI content-creation stack, and see your work reach real audiences from week one.
           </p>
 
-          <div class="glass-card role-card">
+          <div class="glass sheen role-card">
             <h3>AI Content Creation Intern</h3>
             <p>
               Work across our media brands to produce AI-generated video, image, and written content. Ideal for someone who learns fast, has taste, and wants to go deep on generative AI tools.
             </p>
             <a href="mailto:careers@artificialbudhi.com?subject=Application%20–%20AI%20Content%20Creation%20Intern" class="btn btn-primary" id="apply-now-btn">
-              Apply now →
+              Apply now
             </a>
           </div>
         </div>
 
         <!-- Right: Contact Form -->
-        <div class="reveal reveal-delay-2">
-          <h3 style="margin-bottom:var(--gap-md); font-family:var(--font-display); font-size:1.4rem;">Get in touch</h3>
+        <div class="glass sheen contact-panel reveal">
+          <h3>Get in touch</h3>
           <form class="contact-form" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
             <input type="hidden" name="form-name" value="contact">
             <p class="form-honeypot" hidden>
@@ -298,22 +323,40 @@
               <textarea id="contact-message" name="message" placeholder="Tell us a bit about yourself and what excites you about Artificial Budhi Studios..." rows="4"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary" id="form-submit-btn">Send message →</button>
+            <button type="submit" class="btn btn-primary" id="form-submit-btn">Send message</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== SECTION 8: FOOTER ========== -->
+  <!-- ========== SECTION 8: FOUNDER CROSS-LINK ========== -->
+  <section class="section crosslink" id="founder">
+    <div class="container">
+      <div class="glass sheen crosslink-card reveal">
+        <div class="crosslink-copy">
+          <span class="section-label">The Founder</span>
+          <h3>Sujaya Bhat</h3>
+          <p>The studio is one half of the picture. The other is the person building it — AI content creator, educator, and multi-venture founder.</p>
+        </div>
+        <a href="https://sujaybhat.com" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          Visit the portfolio ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
-        <span class="footer-logo">◉ Artificial Budhi Studios</span>
+        <span class="footer-logo">Artificial Budhi Studios</span>
         <ul class="footer-links" role="list">
-          <li><a href="https://instagram.com/artificialbudhi" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">Instagram</a></li>
-          <li><a href="https://youtube.com/@artificialbudhi" target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube">YouTube</a></li>
-          <li><a href="mailto:hello@artificialbudhi.com" aria-label="Email us">Contact</a></li>
+          <li><a href="https://sujaybhat.com" target="_blank" rel="noopener noreferrer">Founder</a></li>
+          <li><a href="https://instagram.com/artificialbudhi" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://youtube.com/@artificialbudhi" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="mailto:hello@artificialbudhi.com">Contact</a></li>
         </ul>
         <p class="footer-copy">© 2025 Artificial Budhi Studios. All rights reserved.</p>
       </div>
